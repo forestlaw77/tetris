@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/* グリッド全体をセンタリング */
+.tetris {
+  display: flex;
+  justify-content: center;
+  /*align-items: center;*/
+  height: 100vh;
+}
+
+/* グリッドのスタイル */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 30px); /* 列数とセルサイズを調整 */
+  grid-template-rows: repeat(20, 30px); /* 行数とセルサイズを調整 */
+  gap: 1px; /* セル間の間隔を調整 */
+  background-color: #333;
+  border: 1px solid #000;
+  position: relative; /* 子要素の絶対位置指定に必要 */
+  width: 310px; /* グリッドの幅を調整 */
+  height: 630px; /* グリッドの高さを調整 */
+  box-sizing: border-box;
+}
+
+/* グリッド内のセルのスタイル */
+.cell {
+  width: 100%;
+  height: 100%;
+  background-color: #444;
+  border: 1px solid #000;
+}
+
+/* テトロミノのスタイル */
+.tetromino {
+  width: 100%;
+  height: 100%;
+  border: 1px solid grey;
+  box-sizing: border-box;
+}
+
+/* テトロミノの色（例） */
+.tetromino-cyan {
+  background-color: cyan; /* Iテトロミノの色を設定 */
+}
+
+.tetromino-blue {
+  background-color: blue; /* Jテトロミノの色を設定 */
+}
+
+.tetromino-orange {
+  background-color: orange; /* Lテトロミノの色を設定 */
+}
+
+.tetromino-yellow {
+  background-color: yellow; /* Oテトロミノの色を設定 */
+}
+
+.tetromino-green {
+  background-color: green; /* Sテトロミノの色を設定 */
+}
+
+.tetromino-purple {
+  background-color: purple; /* Tテトロミノの色を設定 */
+}
+
+.tetromino-red {
+  background-color: red; /* Zテトロミノの色を設定 */
+}
