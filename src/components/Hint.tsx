@@ -1,5 +1,5 @@
 import { Box, Text, HStack } from "@chakra-ui/react";
-import { SQUARE_SIZE } from "../constants";
+import { SQUARE_SIZE, TETROMINOS } from "../constants";
 import { Tetromino } from "../types";
 
 /**
@@ -19,7 +19,9 @@ const Hint: React.FC<{
    * @returns {JSX.Element[]} An array of JSX elements representing the rendered tetromino.
    */
   const renderTetromino = (tetromino: Tetromino) => {
-    const { shape, color } = tetromino;
+    const { name } = tetromino;
+    const { shape, color } = TETROMINOS.filter((tet) => tet.name === name)[0];
+
     return shape.map((row, y) => {
       return row.map((cell, x) => {
         if (cell !== 0) {

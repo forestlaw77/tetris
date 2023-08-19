@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import cloneDeep from "lodash/cloneDeep";
 import { Box } from "@chakra-ui/react";
 import { useSwipeable } from "react-swipeable";
 import { TETROMINOS, GRID_SIZE, SQUARE_SIZE, DROP_SPEED } from "../constants";
@@ -48,7 +47,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   onGameOver,
   addScore,
 }): JSX.Element => {
-  const [grid, setGrid] = useState<string[][]>(cloneDeep(initialGrid));
+  const [grid, setGrid] = useState<string[][]>(structuredClone(initialGrid));
   const [nextTetromino, setNextTetromino] = useState<Tetromino>(
     generateRandomTetromino()
   );
@@ -71,7 +70,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
     const { col, row } = currentTetrominoPosition;
 
     setGrid((prevGrid) => {
-      const newGrid = cloneDeep(prevGrid);
+      const newGrid = structuredClone(prevGrid);
 
       for (let tetrominoRow = 0; tetrominoRow < shape.length; tetrominoRow++) {
         for (
@@ -148,56 +147,34 @@ const GameBoard: React.FC<GameBoardProps> = ({
    * @returns {boolean} True if the tetromino was moved, false otherwise.
    */
   const moveLeft = useCallback((): Boolean => {
-    const newPosition: TetrominoPosition = {
-      col: currentTetrominoPosition.col,
-      row: currentTetrominoPosition.row,
-    };
+    const newPosition = { ...currentTetrominoPosition };
     newPosition.col--;
     return tetrominoMove(newPosition);
-  }, [
-    currentTetrominoPosition.col,
-    currentTetrominoPosition.row,
-    tetrominoMove,
-  ]);
+  }, [currentTetrominoPosition, tetrominoMove]);
 
   /**
    * Moves the tetromino to the right if possible.
    * @returns {boolean} True if the tetromino was moved, false otherwise.
    */
   const moveRight = useCallback((): Boolean => {
-    const newPosition: TetrominoPosition = {
-      col: currentTetrominoPosition.col,
-      row: currentTetrominoPosition.row,
-    };
+    const newPosition = { ...currentTetrominoPosition };
     newPosition.col++;
     return tetrominoMove(newPosition);
-  }, [
-    currentTetrominoPosition.col,
-    currentTetrominoPosition.row,
-    tetrominoMove,
-  ]);
+  }, [currentTetrominoPosition, tetrominoMove]);
 
   /**
    * Moves the tetromino down if possible.
    * @returns {boolean} True if the tetromino was moved, false otherwise.
    */
   const moveDown = useCallback((): Boolean => {
-    const newPosition: TetrominoPosition = {
-      col: currentTetrominoPosition.col,
-      row: currentTetrominoPosition.row,
-    };
+    const newPosition = { ...currentTetrominoPosition };
     newPosition.row++;
     if (!tetrominoMove(newPosition)) {
       writeToGrid();
       return false;
     }
     return true;
-  }, [
-    currentTetrominoPosition.col,
-    currentTetrominoPosition.row,
-    tetrominoMove,
-    writeToGrid,
-  ]);
+  }, [currentTetrominoPosition, tetrominoMove, writeToGrid]);
 
   /**
    * Rotates the current tetromino clockwise by 90 degrees.
@@ -220,7 +197,20 @@ const GameBoard: React.FC<GameBoardProps> = ({
       newTetromino.shape = newShape;
       return newTetromino;
     });
-  }, [currentTetromino.shape]);
+
+    const newPosition = { ...currentTetrominoPosition };
+    if (newPosition.col < 0) {
+      newPosition.col = 0;
+    } else if (newPosition.col + newShape[0].length > GRID_SIZE.columns) {
+      newPosition.col = GRID_SIZE.columns - newShape[0].length;
+    }
+    if (newPosition.row < 0) {
+      newPosition.row = 0;
+    } else if (newPosition.row + newShape.length > GRID_SIZE.rows) {
+      newPosition.row = GRID_SIZE.rows - newShape.length;
+    }
+    setCurrentTetrominoPosition(newPosition);
+  }, [currentTetromino.shape, currentTetrominoPosition]);
 
   /**
    * Handles the key press event and performs corresponding actions.
@@ -275,7 +265,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   const clearFilledRow = useCallback(
     (grid: string[][]): { newGrid: string[][]; clearedRows: number } => {
       let wkGrid = [...grid];
-      let newGrid = cloneDeep(initialGrid);
+      let newGrid = structuredClone(initialGrid);
 
       let clearedRows = 0;
       let newRow = GRID_SIZE.rows - 1;
