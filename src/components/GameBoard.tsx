@@ -35,6 +35,8 @@ interface GameBoardProps {
   addScore: (add: number) => void;
 }
 
+const audioRotate = new Audio("/btn10.mp3");
+
 /**
  * A game board component for the Tetris game.
  * @component
@@ -121,7 +123,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       }
       return true;
     },
-    [currentTetromino.shape, grid]
+    [grid]
   );
 
   /**
@@ -212,6 +214,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
         return newTetromino;
       });
       setCurrentTetrominoPosition(newPosition);
+      audioRotate.play();
     }
     /* Cansel rotate */
   }, [currentTetromino.shape, currentTetrominoPosition, canMoveToPosition]);

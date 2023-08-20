@@ -1,13 +1,8 @@
 import React from "react";
-import { ChakraProvider } from "@chakra-ui/react";
 import Stage from "./components/Stage";
 
 const App: React.FC = () => {
-  return (
-    <ChakraProvider>
-      <Stage />
-    </ChakraProvider>
-  );
+  return <Stage />;
 };
 
 export default App;

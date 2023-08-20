@@ -8,7 +8,7 @@ const Title = () => {
   return (
     <>
       <Text pb="1.0rem" fontSize="1.5rem" fontWeight="700">
-        Tetris
+        Yet Another Tetris
       </Text>
     </>
   );
