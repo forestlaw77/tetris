@@ -51,7 +51,7 @@ const Stage: React.FC = () => {
         <Box>
           <Title />
           <Text fontSize="sm">
-            Copyright Tsutomu FUNADA 2023. All rights reserved.
+            {/* Copyright Tsutomu FUNADA 2023. All rights reserved. */}
           </Text>
           <ScoreBoard score={score} />
           <Usage />

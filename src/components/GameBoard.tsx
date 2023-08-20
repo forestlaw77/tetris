@@ -98,8 +98,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
    * @returns {boolean} True if the tetromino can be moved to the position, false otherwise.
    */
   const canMoveToPosition = useCallback(
-    (position: { col: number; row: number }): Boolean => {
-      const shape = currentTetromino.shape;
+    (position: { col: number; row: number }, shape: number[][]): Boolean => {
+      //const shape = currentTetromino.shape;
       for (let row = 0; row < shape.length; row++) {
         for (let col = 0; col < shape[0].length; col++) {
           if (shape[row][col] !== 0) {
@@ -133,13 +133,13 @@ const GameBoard: React.FC<GameBoardProps> = ({
    */
   const tetrominoMove = useCallback(
     (position: { col: number; row: number }): Boolean => {
-      if (canMoveToPosition(position)) {
+      if (canMoveToPosition(position, currentTetromino.shape)) {
         setCurrentTetrominoPosition(position);
         return true;
       }
       return false;
     },
-    [canMoveToPosition]
+    [canMoveToPosition, currentTetromino]
   );
 
   /**
@@ -192,12 +192,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       newShape.push(newRow);
     }
 
-    setCurrentTetromino((prev) => {
-      const newTetromino = { ...prev };
-      newTetromino.shape = newShape;
-      return newTetromino;
-    });
-
+    // Check for overflow from grid
     const newPosition = { ...currentTetrominoPosition };
     if (newPosition.col < 0) {
       newPosition.col = 0;
@@ -209,8 +204,17 @@ const GameBoard: React.FC<GameBoardProps> = ({
     } else if (newPosition.row + newShape.length > GRID_SIZE.rows) {
       newPosition.row = GRID_SIZE.rows - newShape.length;
     }
-    setCurrentTetrominoPosition(newPosition);
-  }, [currentTetromino.shape, currentTetrominoPosition]);
+
+    if (canMoveToPosition(newPosition, newShape)) {
+      setCurrentTetromino((prev) => {
+        const newTetromino = { ...prev };
+        newTetromino.shape = newShape;
+        return newTetromino;
+      });
+      setCurrentTetrominoPosition(newPosition);
+    }
+    /* Cansel rotate */
+  }, [currentTetromino.shape, currentTetrominoPosition, canMoveToPosition]);
 
   /**
    * Handles the key press event and performs corresponding actions.
@@ -273,7 +277,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
         if (checkIfRowIsFilled(wkGrid[row])) {
           clearedRows++;
         } else {
-          // 埋まっていない行を転写する
+          //Transcribe unfilled lines
           for (let col = 0; col < GRID_SIZE.columns; col++) {
             newGrid[newRow][col] = wkGrid[row][col];
           }
