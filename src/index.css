@@ -80,3 +80,6 @@ code {
 .tetromino-red {
   background-color: red; /* Zテトロミノの色を設定 */
 }
+
+.tetromino-ghost {
+}

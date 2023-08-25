@@ -13,8 +13,8 @@ export const SQUARE_SIZE: number = 20;
  * @type {{rows: number, columns: number}}
  */
 export const GRID_SIZE: { rows: number; columns: number } = {
-  rows: 16,
-  columns: 16,
+  rows: 20,
+  columns: 10,
 };
 
 /**

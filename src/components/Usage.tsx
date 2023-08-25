@@ -7,12 +7,21 @@ import { GRID_SIZE, SQUARE_SIZE } from "../constants";
  */
 const Usage = () => {
   return (
-    <Box bgColor="darkgray" w={GRID_SIZE.columns * SQUARE_SIZE}>
-      <Text align="center">
-        左：<Kbd color="gray.700">←</Kbd>&emsp; 右：
-        <Kbd color="gray.700">→</Kbd>&emsp; 下：
-        <Kbd color="gray.700">↓</Kbd>&emsp; 回転：
-        <Kbd color="gray.700">↑</Kbd>
+    <Box bgColor="darkgray" w={(GRID_SIZE.columns + 5) * SQUARE_SIZE}>
+      <Text>
+        Move:<Kbd color="gray.700">←</Kbd>
+        <Kbd color="gray.700">↓</Kbd>
+        <Kbd color="gray.700">→</Kbd>
+      </Text>
+      <Text>
+        Rotate:<Kbd color="gray.700">Z</Kbd> <Kbd color="gray.700">X</Kbd>
+      </Text>
+      <Text>
+        Drop:<Kbd color="gray.700">↑</Kbd>
+        <Kbd color="gray.700">End</Kbd>
+      </Text>
+      <Text>
+        Hold:<Kbd color="gray.700">Shift</Kbd>
       </Text>
     </Box>
   );
